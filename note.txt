@@ -1,0 +1,144 @@
+--git上传文件
+cd 到本地目录
+git init
+git add .
+git commit -m 注释
+git上新建仓库并复制地址 例https://github.com/xiangxl95/note.git
+git remote add orign https://github.com/xiangxl95/note.git
+git branch -M main
+git pull --rebase orign main
+git push -u orign main
+
+
+--ES相关
+POST http://es-cn-nif23ynx70070n19z.elasticsearch.aliyuncs.com:9200/coserviceability_arrival_report/_delete_by_query
+Content-Type: application/json
+Authorization: {{es-auth}}
+
+{
+  "query": {
+    "range": {
+      "timestamp": {
+        "lte": 1641042884000
+      }
+    }
+  }
+}
+es-auth 为"BASIC " + Base64.encodeBase64String((esname + ":" + espassword).getBytes()) 
+
+
+GET b2c_kv/_search
+{
+  "query": {
+    "match": {
+      "test": "system hello"
+    }
+  }
+}
+
+POST b2c_kv/_doc
+{
+  "text" : "941446004",
+  "@timestamp" : "2022-07-21T10:37:05.629+0800",
+  "key" : "APP_CANCEL_FOLLOW:941446004:2022-07-21",
+  "type" : "system",
+  "test" : "helloworld"
+}
+
+PUT b2c_banner_material 
+{
+	"mappings": {
+		"dynamic_templates": [{
+			"strings": {
+				"match_mapping_type": "string",
+				"mapping": {
+					"type": "keyword"
+				}
+			}
+		}]
+	}
+}
+
+POST b2c_banner_material/_mapping
+{
+    "properties": {
+        "sort": {
+        	 "type":"integer"
+        }
+    }
+}
+
+DELETE b2c_banner_material/
+
+GET b2c_banner_material/_search
+{
+  "query": {
+    "terms": {
+      "applyType": ["1","2"]
+    }
+  }
+}
+
+GET b2c_banner_material/_search
+{
+  "query": {
+    "bool" : {
+      "filter" : [
+        {
+          "term" : {
+            "locationId" : {
+              "value" : 1001,
+              "boost" : 1.0
+            }
+          }
+        },
+        {
+          "term" : {
+            "channel" : {
+              "value" : "alipay",
+              "boost" : 1.0
+            }
+          }
+        }
+      ],
+      "adjust_pure_negative" : true,
+      "boost" : 1.0
+    }
+  }
+}
+
+POST b2c_banner_material/_update/13
+{
+  "doc":{
+    "applyType":"1"
+  }
+}
+
+GET b2c_service_report_sketch/_search
+{
+  "track_total_hits": true
+}
+
+PUT b2c_chat_record
+{
+  "settings" : {
+      "number_of_shards":6
+  },
+  "mappings": {        
+      "properties": {        
+        "userId":{              
+          "type": "keyword"     
+        },
+        "senderType":{
+          "type": "keyword"
+        },
+        "sendTime":{
+          "type": "date"
+        },
+        "content":{
+          "type": "text"
+        }
+     }
+  }
+  
+}
